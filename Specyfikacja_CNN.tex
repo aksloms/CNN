@@ -1,0 +1,223 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{lastpage}
+
+\usepackage{fancyhdr}
+
+\usepackage{polski}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{indentfirst}
+
+\usepackage{enumerate}
+
+ 
+
+\begin{document}
+
+\title{Specyfikacja projektowa\\{\small Implementacja rozwiązania problemu rozpoznawania wzorców z wykorzystaniem technik głębokiego uczenia (konwolucyjnych sieci neuronowych).}}
+
+
+\bigbreak
+
+\author{Joanna Smolska 291100}
+
+\date{28.03.2019}
+
+\maketitle
+
+\thispagestyle{empty}
+
+\pagebreak
+
+\tableofcontents
+
+\pagestyle{fancy}
+
+\fancyhead{}
+
+\cfoot{\thepage\ / \pageref{LastPage}}
+
+\pagebreak
+
+\section{Wstęp}
+
+\subsection{Sieci neuronowe}
+
+Sieć neuronowa, jak sama nazwa wskazuje, jest to struktura powiązanych ze sobą neuronów, czyli elementów przetwarzających dane. Pierwowzorem sieci neuronowych w informatyce był mózg ludzki. Kluczową cechą odróżniającą sieci neuronowe od innych algorytmów przetwarzających dane jest zdolność wykorzystania zdobytej podczas treningu wiedzy do wykonania zadań na nieznanych wcześniej danych.\\
+
+Istnieje wiele rodzajów sieci różniących się budową neuronów, układem połączeń między nimi oraz sposobem przesyłania sygnałów w obrębie całej sieci. Podstawowe typy sieci neuronowych to:
+\begin{itemize}
+\item sieci jednokierunkowe 
+\item sieci rekurencyjne
+\item sieci Kohonena (samoorganizujące się mapy)
+\end{itemize}
+
+
+Jeżeli sieć zawiera pomiędzy warstwą wejściową a wyjściową warstwy ukryte, to określana jest mianem głębokiej.
+
+\subsection{Konwolucyjne sieci neuronowe}
+
+Podczas projektu opisywanego w niniejszej specyfikacji zajmować się będę szczególnym rodzajem sieci, jakim są konwolucyjne sieci neuronowe, w których układ połączeń pomiędzy neuronami inspirowany jest budową narządu wzroku u ludzi i zwierząt. Sieć składa się z wielu wartw, między innymi:
+\begin{itemize}
+\item wejściowej
+\item konwolucyjnej
+\item \texttt{ReLU}
+\item \texttt{pooling}
+\item gęstej (\texttt{fully connected layer})
+\end{itemize} 
+
+W warstwie wejściowej neurony są przyporządkowywane do konkretnych obszarów tej samej wielkości. Każda grupa natomiast odpowiada neuronowi z kolejnej warstwy, co pozwala na wykrycie pewnej prostej cechy obrazu. Powyższe przyporządkowanie określane jest mianem filtru, w którym wszystkie neurony mają taką samą wagę. Ponadto, filtrów w sieci może być dowolnie wiele. Składają się one na warstę konwolucyjną, która połączona jest natomiast z warstwą \texttt{ReLU} zawierającą funkcję aktywującą. Następnie, neurony z\,warstwy \texttt{ReLU} połączone są z neuronami warstwy \texttt{pooling}, gdzie wydobywane są najważniejsze informacje zdobyte w poprzednich warstwach, na przykład poprzez znalezienie maksymalnej wartości z grupy sąsiednich neuronów warstwy poprzedzającej. Wartswy konwolucyjna, \texttt{ReLU} i \texttt{pooling} mogą wielokrotnie występować w sieci. Ostatnią warstwą jest warstwa gęsta, w\,której wszystkie neurony z warstwy wcześniejszej są połączone ze wszystkimi neuronami z warstwy kolejnej.\\ 
+
+Konwolucyjne sieci neuronowe służą przede wszystkim do klasyfikacji wzorców, którym to zagadnieniem zajmę się w opisywanym projekcie.
+
+\section{Opis ogólny}
+
+\subsection{Nazwa programu}
+
+Niniejsza specyfikacja dotyczy programu \texttt{"Not this CNN"} tworzonego w\,ramach projektu indywidualnego.
+
+\subsection{Poruszany problem}
+
+Program stanowić będzię implementację konwolucyjnej sieci neuronowej dla 3 zbiorów danych. Pierwsza sieć rozpoznawać będzie wzorce ze zbioru danych \texttt{MNIST}, druga ze zbioru \texttt{CIFAR-10}, a ostatnia z przygotowanego przeze mnie zbioru.\\
+
+Program umożliwiał będzie wybranie sieci, z której użytkownik chce skorzystać, a następnie wprowadzenie danej (lub zbioru danych) analogicznej do danych treningowych jednego z trzech zbiorów. Następnie zwrócona zostanie informacja o tym, jaki wzorzec rozpoznała sieć i z jakim prawdopodobieństwem.
+ 
+\subsection{Użytkownik docelowy}
+
+Program kierowany jest do osób zainteresowanych technikmi głębokiego uczenia, konwolucyjnych sieci neuronowych oraz testowaniem ich możliwości.
+ 
+\section{Opis funkcjonalności}
+
+\subsection{Jak korzystać z programu?}
+
+Użytkownik włącza program poprzez uruchomienie pliku \texttt{notThisCNN.exe}. Następnie wybiera, z której sieci chce skorzystać i podaje ścieżkę do katalogu z danymi do sklasyfikowania. Kiedy sieć zakończy swoje działanie, wyświetlane są wyniki jej działania oraz pytanie, czy użytkownik chce zapisać rezultat. Jeżeli odpowiedź jest twierdząca, program prosi o podanie ścieżki do katalogu, w którym umieszczony ma zostać plik \texttt{.txt} i/lub plik z rozszerzeniem \texttt{.png}, zawierające odpowiedznio klasyfikację poszczególnych obrazów i\,jej dokładność oraz wizualizację danych. Następnie, użytkownik pytany jest o chęć dalszego korzystania z tej samej sieci, przełączenia się na inną lub też zakończenia pracy z programem.
+
+\subsection{Uruchomienie programu}
+
+Uruchomienie programu sprowadza się wyłączenie do uruchomienia pliku \texttt{notThisCNN.exe}.
+
+\subsection{Możliwości programu}
+
+Program posiada następujące funkcjonalności:
+\begin{itemize}
+\item klasyfikacja wzorców dla danych ze zbioru \texttt{MNIST} i analogicznych
+\item klasyfikacja wzorców dla danych ze zbioru \texttt{CIFAR-10} i analogicznych
+\item klasyfikacja wzorców dla danych z przygotowanego przeze mnie zbioru i analogicznych
+\item zapisanie wyniku działania programu do pliku tekstowego
+\item wizualizacja działania sieci wraz z możliwością zapisu do pliku \texttt{.png}
+\end{itemize}
+
+\section{Format danych i struktura plików}
+
+\subsection{Struktura katalogów}
+
+W folderze głównym projektu znajdują się plik wykonywalny, katalog kodu źródłowego oraz katalogi zawierające dane ze zbiorów, na których trenowana i testowana była sieć. Takie rozwiązanie pozwala użytkownikowi sprawdzić, czy któraś z sieci w programie może poprawnie sklasyfikować jego dane wejściowe.
+
+\subsection{Dane wejściowe}
+
+Program korzysta z jednego lub wielu plików wejściowych w formacie \texttt{.png}. Użytkownik proszony jest przez program o podanie ścieżki do katalogu zawierającego dane wejściowe. \\
+
+Możliwe jest również skorzystanie z danych dostarczonych wraz z programem. Należy jednak pamiętać, że są to dane, na których trenowane i\,testowane były sieci.
+
+\subsection{Dane wyjściowe}
+
+Dane wyjściowe stanowią plik w formacie \texttt{.txt} zawierający informację o rozpoznanym wzorcu dla poszczególnych danych wejściowych oraz o dokładności klasyfikacji przez sieć. Plik zapisywany jest na żądanie użytkownika we wskazanym przez niego miejscu.\\
+
+Ponadto, instnieje możliwość zapisania wyświetlanych wizualizacji działania sieci w pliku z rozszczerzeniem \texttt{.png}.
+
+\section{Rozwiązanie algorytmiczne}
+
+\subsection{Opis ogólny}
+
+Niezależnie od tego, którą z sieci wybierze użytkownik, jej ogólny sposób realizacji opisać można w następujących krokach:
+\begin{enumerate}
+\item podział zbioru danych: 70\% to dane treningowe, 30\% - testowe
+\item utworzenie \texttt{placeholderów} na dane
+\item konwersja listy wartości na wygodniejszą formę (przykładowo dla \texttt{MNIST} - sześcian o wymiarach 28x28x1)
+\item zdefiniowanie funkcji pomocniczych (utworzenie wag, tendencyjności (\texttt{biases variables}), warstw)
+\pagebreak
+\item zdefiniowanie sieci neuronowej:
+\begin{enumerate}
+\item warstwa konwolucyjna wydobywająca określoną liczbę cech z grup neuronów
+\item wykonwywanie operacji mnożenia wartości neuronów przez wagi i dodanie współczynnika tendencyjności, a następnie przejście danych przez funckję aktywującą \texttt{ReLU}
+\item przesłanie danych do warstwy \texttt{pooling}
+\item połączenie neuronów z warstwy \texttt{pooling} z neuronami z kolejnej warstwy konwolucyjnej korzystającej z cech wydobytych przez pierwszą warstwę konwolucyjną
+\item powtórzenie powyższych kroków dowolną liczbę razy
+\item trafienie do warstwy gęstej - usunięcie części neuronów w celu uniknięcia zjawiska nadmiernego dopasowania do danych treningowych (\texttt{overfitting})
+\end{enumerate}
+\item trening - przejście danych po pętli składającej się z etapów zdefiniowanych w powyższych krokach
+\item wyliczenie dokładności sieci 
+\end{enumerate}
+
+\subsection{Scenariusz działania programu}
+
+W ogólnym przebiegu program wykonuje kolejno nastepujace czynnosci:
+\begin{enumerate}
+\item uruchmienie programu
+\item pobranie od użytkownika danych wejściowych
+\item sprawdzenie poprawności danych wejściowych
+\item uruchomienie wybranej przez użytkownika sieci 
+\item wyświetlenie wyniku działania sieci
+\item zapisanie wyniku działania sieci na żądanie użytkownika
+\item jeśli użytkownik wyraził chęć dalszego korzystania z programu - przejście do punktu 2.
+\item zakończenie działania programu.
+\end{enumerate}
+
+\section{Dane techniczne}
+
+\subsection{Wymagania techniczne}
+
+Program do poprawnego działania potrzebuje zainstalowanego \texttt{Pythona\,3} w wersji 64-bitowej oraz procesor graficzny wspierający technologię \texttt{CUDA}.
+
+\subsection{Środowisko}
+
+Program stworzę przy pomocy \texttt{Visual Studio Code}.
+
+\subsection{Biblioteki niestandardowe}
+
+Biblioteką, z której głownie będę korzystać jest \texttt{TensorFlow} w wersji ze wsparciem dla GPU. Dodatkowo zamierzam użyć biblioteki \texttt{seaborn} do wizualizacji danych, bibliotekę \texttt{appJar} do stworzenia graficznego interfejsu użytkownika i \texttt{pytest} do zautomatyzowanych testów.
+
+\subsection{Wersja języka Python}
+
+Do stworzenia programu posługiwać się będę jezykiem \texttt{Python 3.7.3rc1} w wersji 64-bitowej.
+
+\section{Struktura wersjonowania}
+
+\subsection{System kontroli wersji}
+
+Aplikacja \texttt{"Not this CNN"} zostanie stworzona z pomocą systemu kontroli wersji \texttt{GitHub}. W repozytorium umieszczać będę zarówno specyfikację, jak i kod zródłowy programu. Każda nowa funkcjonalność umieszczona zostanie początkowo na osobnym branchu. Następnie, po jej przetestowaniu połączę ją z istniejącym rdzeniem programu poprzez \texttt{merge}. 
+
+\subsection{Konwencja nazewnictwa}
+
+Program powstanie zgodnie z konwencją nazewnictwa w języku \texttt{Python}. Jeśli nazwa stanowić będzie złączenie kilku słów, każdy kolejny wyraz zacznie się z wielkiej litery dla zwiększenia czytelności kodu. Przyjmę również nazewnictwo angielskie w celu zachowania spójności z nazwami wykorzystywanych bibliotek i określonych w nich funkcji.\\
+
+Skrypty posiadać będą nazwy odpowiadające ich funkcjonalnościom. Natomiast tworzone na \texttt{GitHubie} branche nazwane zostaną zgodnie ze schematem \texttt{FEATURE/...} - nazwa funkcjonalności zapisana w takiej samej konwencji jak nazwy skryptów.
+ 
+\section{Testowanie}
+
+\subsection{Sposoby testowania}
+
+Program testowany będzie na bieżąco za pomocą asercji i testowania ręcznego po wprowadzeniu każdej nowej funkcjonalności. Kryterium wyboru techniki testowania zależne jest od charakterystyki problemu – testy ręczne wykorzystywane będą do wyszukiwania potencjalnych błędów podczas komunikacji programu z użytkownikiem, natomiast poprawność logiczna programu sprawdzana będzie głównie za pomocą asercji.\\
+
+Do przeprowadzenia testów automatycznych skorzystam z frameworka \texttt{pytest}.
+
+
+\subsection{Obszar testowania}
+
+\begin{enumerate}
+\item Pobieranie przez program danych wejściowych.
+\item Reakcja programu na nieprawidłowy format danych.
+\item Przyporządkowanie neuronów do pikseli dla każdej z sieci.
+\item Działanie filtrów każdej z sieci.
+\item Działanie funkcji aktywujących każdej z sieci.
+\item Działanie warstw \texttt{pooling} każdej z sieci.
+\item Przesyłanie danych między warstwami każdej z sieci.
+\item Optymalizacja wag i zmniejszanie entropii krzyżowej każdej z sieci.
+\item Propagacja wsteczna w każdej z sieci.
+\item Zdolność każdej z sieci do klasyfikacji wzorców w danych analogicznych do treningowych.
+\item Wyświetlanie i zapisywanie rezultatów działania.
+\end{enumerate}
+
+\end{document}
